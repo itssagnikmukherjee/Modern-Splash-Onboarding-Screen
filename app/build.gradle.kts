@@ -50,6 +50,18 @@ android {
 }
 
 dependencies {
+    //coil
+    implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("io.coil-kt:coil-gif:2.1.0")
+
+    //pager lib
+    implementation("com.google.accompanist:accompanist-pager:0.28.0")
+
+    //pager indicator
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
+
+    //system ui controller
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
