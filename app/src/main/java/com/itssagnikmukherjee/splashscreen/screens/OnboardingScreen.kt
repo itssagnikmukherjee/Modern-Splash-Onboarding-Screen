@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -22,6 +23,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -43,20 +46,28 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import com.itssagnikmukherjee.splashscreen.R
 import com.itssagnikmukherjee.splashscreen.ui.theme.mukta
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+
 @Preview
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OnboardingScreen() {
     val pagerState = rememberPagerState()
     val list = getList()
+    val scope = rememberCoroutineScope()
     Row (
-        modifier = Modifier.fillMaxWidth().padding(20.dp).offset(x=-10.dp,y=40.dp),
+        modifier = Modifier.fillMaxWidth().padding(20.dp).offset(x=-10.dp,y=40.dp).zIndex(2f),
         horizontalArrangement = Arrangement.End,
     ){
-        Button(onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent,
-            contentColor = Color.Black
-        )){
+        Button(onClick = {
+            scope.launch {
+                pagerState.animateScrollToPage(pagerState.currentPage+2)
+            }
+        }, colors = ButtonDefaults.buttonColors(
+            containerColor = Color.White
+        ), modifier = Modifier.zIndex(2f)){
         Text(text = "SKIP", fontFamily = mukta, fontSize = 16.sp, fontWeight = FontWeight.Light, color = Color.Gray)
         }
     }
@@ -86,11 +97,18 @@ fun OnboardingScreen() {
             }
 
         }
-        Button(onClick = { /*TODO*/ }, modifier = Modifier.offset(y = -130.dp), colors = ButtonDefaults.buttonColors(
+        Button(onClick = {
+            scope.launch {
+                pagerState.animateScrollToPage(pagerState.currentPage+1)
+            }
+        }, modifier = Modifier.offset(y = -130.dp), colors = ButtonDefaults.buttonColors(
             containerColor = Color.Black,
             contentColor = Color.White
         )) {
-            Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = "")
+            if (pagerState.currentPage==list.size-1){
+                Icon(imageVector = Icons.Filled.Check, contentDescription = "")
+            }
+            else{Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = "")}
         }
         HorizontalPagerIndicator(pagerState=pagerState,pageCount = list.size, indicatorWidth = 20.dp, indicatorHeight = 15.dp, modifier = Modifier.offset(0.dp,-70.dp))
     }
