@@ -50,9 +50,6 @@ android {
 }
 
 dependencies {
-    //coil
-    implementation("io.coil-kt:coil-compose:2.7.0")
-    implementation("io.coil-kt:coil-gif:2.1.0")
 
     //pager lib
     implementation("com.google.accompanist:accompanist-pager:0.28.0")
@@ -64,8 +61,10 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
 
     //lottie
-
     implementation ("com.airbnb.android:lottie-compose:6.0.0")
+
+    //navigation
+    implementation("androidx.navigation:navigation-compose:2.7.7")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

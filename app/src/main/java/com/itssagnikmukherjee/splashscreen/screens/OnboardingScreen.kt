@@ -1,25 +1,20 @@
 package com.itssagnikmukherjee.splashscreen.screens
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,7 +22,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -35,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import com.airbnb.lottie.LottieComposition
+import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -44,16 +38,15 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
+import com.itssagnikmukherjee.splashscreen.MainActivity
 import com.itssagnikmukherjee.splashscreen.R
 import com.itssagnikmukherjee.splashscreen.ui.theme.mukta
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @Preview
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun OnboardingScreen() {
+fun OnboardingScreen(nav: NavController,context: MainActivity) {
     val pagerState = rememberPagerState()
     val list = getList()
     val scope = rememberCoroutineScope()
@@ -99,7 +92,12 @@ fun OnboardingScreen() {
         }
         Button(onClick = {
             scope.launch {
+                if (pagerState.currentPage == 2){
+                    onBoardingIsFinished(context)
+                nav.navigate("home")
+                }else{
                 pagerState.animateScrollToPage(pagerState.currentPage+1)
+                }
             }
         }, modifier = Modifier.offset(y = -130.dp), colors = ButtonDefaults.buttonColors(
             containerColor = Color.Black,
@@ -136,4 +134,11 @@ fun getList():List<PagerContent>{
             Color.White
         ),
     )
+}
+
+private fun onBoardingIsFinished(context:MainActivity){
+    val sharedPref = context.getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+    val editor = sharedPref.edit()
+    editor.putBoolean("isFinished",true)
+    editor.apply()
 }
