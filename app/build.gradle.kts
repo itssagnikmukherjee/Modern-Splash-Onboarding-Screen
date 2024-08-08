@@ -63,6 +63,10 @@ dependencies {
     //system ui controller
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
 
+    //lottie
+
+    implementation ("com.airbnb.android:lottie-compose:6.0.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

@@ -1,54 +1,62 @@
 package com.itssagnikmukherjee.splashscreen.screens
 
-import android.view.inputmethod.InputContentInfo
 import android.window.SplashScreen
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import coil.compose.AsyncImage
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.HorizontalPagerIndicator
-import com.google.accompanist.pager.rememberPagerState
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalOf
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
+import com.airbnb.lottie.compose.LottieAnimatable
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.itssagnikmukherjee.splashscreen.R
 
-@OptIn(ExperimentalPagerApi::class)
+@Preview
 @Composable
 fun SplashScreen() {
-    val pagerState = rememberPagerState()
-    val list = getList()
-    Column {
-        HorizontalPager(count = list.size, state = pagerState) {
-            Column {
-                Text(text = "${list[it].title}")
-                Image(painter = painterResource(id = list[it].image), contentDescription = "")
-                Text(text = "${list[it].description}")
-            }
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.bootanimation))
+    val loaderComp by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loaderanimation))
+    var isPlaying by remember { mutableStateOf(true) }
+    val progress by animateLottieCompositionAsState(composition = composition, isPlaying=isPlaying)
+
+    LaunchedEffect(key1 = progress) {
+        if (progress==0f){
+            isPlaying = true
         }
-        HorizontalPagerIndicator(pagerState=pagerState,pageCount = list.size)
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "")
+        if (progress==1f){
+            isPlaying = false
         }
     }
-}
 
-data class PagerContent(
-    val image: Int,
-    val title: String,
-    val description: String,
-)
-
-fun getList():List<PagerContent>{
-    return listOf(
-        PagerContent(R.drawable.ic_launcher_background, "title1", "description1"),
-        PagerContent(R.drawable.ic_launcher_background, "title2", "description2"),
-        PagerContent(R.drawable.ic_launcher_background, "title3", "description3"),
-    )
+    Column (
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+        ){
+        LottieAnimation(
+            composition = composition,
+            modifier = Modifier.fillMaxHeight().zIndex(1f),
+            )
+    }
 }

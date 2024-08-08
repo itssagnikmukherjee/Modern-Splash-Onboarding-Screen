@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
+import com.itssagnikmukherjee.splashscreen.screens.OnboardingScreen
 import com.itssagnikmukherjee.splashscreen.screens.SplashScreen
 import com.itssagnikmukherjee.splashscreen.ui.theme.SplashScreenTheme
 
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             SplashScreenTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) {
-                    SplashScreen()
+                    OnboardingScreen()
                 }
             }
         }
