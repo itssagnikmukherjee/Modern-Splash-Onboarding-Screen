@@ -2,11 +2,23 @@ package com.itssagnikmukherjee.splashscreen.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.itssagnikmukherjee.splashscreen.R
 
 // Set of Material typography styles to start with
+
+//Custom font MUKTA
+
+val mukta = FontFamily(
+    Font(R.font.muktaregular, FontWeight.Normal),
+    Font(R.font.muktamedium, FontWeight.Medium),
+    Font(R.font.muktasemibold, FontWeight.SemiBold),
+    Font(R.font.muktabold, FontWeight.Bold)
+)
+
 val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
